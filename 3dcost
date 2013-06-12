@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+
+	printf "\n No file selected. Please select a file like this: \n\n $ 3dcost Desktop/print.stl \n\n"
+
+else 
+
+	volume=$(admesh $1 –tolerance=0.01 –exact %1 | grep Volume | awk '$2 != 200 { print $8 }')
+
+	pricezcorp=`echo "scale = 1 ; $volume / 1000 * 1.5" | bc`
+	priceprojet=`echo "scale = 1 ; $volume / 1000 * 1.5" | bc`
+	pricepmakerbot=`echo "scale = 1 ; $volume / 1000 * 0.6" | bc`
+
+	printf "\n This part has $volume mm3 and the material will cost:\n\n     Z-Corp $pricezcorp €\n     Projet $priceprojet €\n     Makerbot $pricepmakerbot €\n\n"
+
+fi
